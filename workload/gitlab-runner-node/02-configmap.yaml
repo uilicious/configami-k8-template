@@ -1,0 +1,84 @@
+##############################################################
+#
+# Config mapping for file relay
+#
+##############################################################
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{name}}-config
+  namespace: {{namespace}}
+data:
+  runner.sh: |
+    #!/bin/sh
+
+    # Register token
+    GITLAB_REGISTER_TOKEN="{{gitlab.token}}"
+
+    # Remove existing config.toml if present
+    # rm /etc/gitlab-runner/config.toml
+
+    # Register runner, if not previously registered
+    if [ ! -f /etc/gitlab-runner/config.toml ]; then
+      gitlab-runner register --non-interactive \
+        --url  "{{gitlab.url}}" \
+        --registration-token "{{gitlab.token}}" \
+        --description "{{name}}" \
+        --executor "docker" \
+        --docker-image "alpine:latest" \
+        --tag-list "{{runner.tags}}" \
+        --run-untagged=true --locked=false \
+        --docker-image "docker:19.03.11" \
+        --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
+        --template-config "/register.toml"
+    fi
+
+    # It should already be registered by now
+    # Get the worker token - and update the config
+    export GITLAB_RUNNER_TOKEN=$(cat /etc/gitlab-runner/config.toml | grep "token =" | sed 's/^.*"\(.*\)".*$/\1/')
+
+    # Update the runner config
+    cat /register.toml | sed -e "s/^\(.*token = \).*$/\1\"$GITLAB_RUNNER_TOKEN\"/" > /etc/gitlab-runner/config.toml
+
+    # # log the config
+    # echo "## ---------------------"
+    # echo "## Log the register.toml"
+    # cat /register.toml | echo
+    # echo "## ---------------------"
+    # echo "## Log the config.toml"
+    # cat /etc/gitlab-runner/config.toml | echo
+    # echo "## ---------------------"
+
+    # And run the entrypoint
+    gitlab-runner run --user=gitlab-runner --working-directory=/home/gitlab-runner
+
+  register.toml: |
+    concurrent = {{runner.concurrent}}
+    check_interval = 0
+
+    [session_server]
+      session_timeout = 1800
+
+    [[runners]]
+      name = "{{name}}"
+      url = "{{gitlab.url}}"
+      token = "{{gitlab.token}}"
+      executor = "docker"
+      output_limit = 40960
+      environment = ["LC_ALL=en_US.UTF-8", "DOCKER_TLS_CERTDIR=", "DOCKER_HOST=unix:///var/run/docker.sock"]
+      [runners.docker]
+        tls_verify = false
+        disable_entrypoint_overwrite = false
+        oom_kill_disable = false
+        shm_size = 0
+        privileged = true
+        volumes = ["/certs/client", "/cache", "/var/run/docker.sock:/var/run/docker.sock"]
+        disable_cache = false
+        image = "docker:18.09.7"
+        cache_dir = "/cache"
+        # services = ["docker:18.09.7"]
+      [runners.cache]
+        Insecure = false
+  
+---

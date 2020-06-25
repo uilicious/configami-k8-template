@@ -1,0 +1,17 @@
+{
+    "namespace": "gitlab-runner-docker",
+    "name": "runner-node",
+
+    "simpleNodeAffinityLabel": "gitlab-runner",
+
+    "gitlab": {
+        "runnerImage": "gitlab/gitlab-runner:alpine-v13.1.0-rc1",
+        "url" : "http://gitlab.gitlab.svc.cluster.local/",
+        "token": "PUT-YOUR-VERY-SECRET-KEY-HERE"
+    },
+
+    "runner": {
+        "concurrent": 2,
+        "tags": "rancher,docker"
+    }
+}

@@ -1,0 +1,3 @@
+{
+	"template": "k8/workload/gitlab-runner-node"
+}

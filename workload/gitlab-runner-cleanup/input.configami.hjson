@@ -1,0 +1,6 @@
+{
+    "namespace": "gitlab-runner-docker",
+    "name": "runner-cleanup",
+
+    "simpleNodeAffinityLabel": "gitlab-runner",
+}

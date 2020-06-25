@@ -1,0 +1,50 @@
+{
+	"template": "k8/basic/daemonset",
+	"input": {
+
+		// Name / Namespace
+		//-------------------------------------------
+		"name":      "{{name}}",
+		"namespace": "{{namespace}}",
+
+		// Node Affinity
+		//-------------------------------------------
+		"simpleNodeAffinity": {
+			"{{simpleNodeAffinityLabel}}":"true"
+		},
+
+		// Env cleanup mapping
+		//-------------------------------------------
+		"env" : {
+			"EXPECTED_FREE_SPACE": "20G",
+			"LOW_FREE_SPACE": "10G",
+			"CHECK_INTERVAL": "10m",
+			"DEFAULT_TTL": "60m"
+		},
+
+		// Container image
+		//-------------------------------------------
+		"image": "quay.io/gitlab/gitlab-runner-docker-cleanup",
+
+		// Volumes to be mounted
+		//----------------------------
+		"volumeMounts": [
+			{
+				"mountPath": "/var/run/docker.sock",
+				"name": "docker-sock"
+			}
+		],
+
+		// Volumes claim to setup
+		//----------------------------
+		"volumes" : [
+			{
+				"hostPath": {
+					path: "/var/run/docker.sock",
+					type: "Socket"
+				},
+				"name": "docker-sock"
+			}
+		],
+	}
+}

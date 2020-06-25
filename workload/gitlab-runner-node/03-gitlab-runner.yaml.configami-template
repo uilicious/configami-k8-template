@@ -1,0 +1,102 @@
+{
+	"template": "k8/basic/daemonset",
+	"input": {
+
+		// Name / Namespace
+		//-------------------------------------------
+		"name":      "{{name}}",
+		"namespace": "{{namespace}}",
+
+		// Scale / Node Affinity
+		//-------------------------------------------
+		"scale": "1",
+		"simpleNodeAffinity": {
+			"{{simpleNodeAffinityLabel}}":"true"
+		},
+
+		// Command arguments
+		//-------------------------------------------
+		"command": "/bin/sh",
+		"commandArgsArray": [ "/runner.sh" ]
+		
+		// Container image
+		//-------------------------------------------
+		"image": "{{gitlab.runnerImage}}",
+
+		// Resource request / limits
+		//-------------------------------------------
+		"requests" : {
+			"memory": "500Mi",
+			"cpu": "250m"
+		},
+		"limits" : {
+			"memory": "4000Mi",
+			"cpu": "4000m"
+		},
+
+		// Volumes to be mounted
+		//----------------------------
+		"volumeMounts": [
+			{
+				"mountPath": "/register.toml",
+				"name": "{{name}}-config",
+				"subPath": "register.toml"
+			},
+			{
+				"mountPath": "/runner.sh",
+				"name": "{{name}}-config",
+				"subPath": "runner.sh"
+			},
+			{
+				"mountPath": "/var/run/docker.sock",
+				"name": "docker-sock"
+			},
+			{
+				"mountPath": "/etc/gitlab-runner/",
+				"name": "{{name}}-store"
+			},
+			{
+				"mountPath": "/cache",
+				"name": "{{name}}-cache"
+			}
+		],
+
+		// Volumes claim to setup
+		//----------------------------
+		"volumes" : [
+			{
+				"configMap": {
+					"defaultMode": 511,
+					"name": "{{name}}-config",
+					"optional": false
+				},
+				"name": "{{name}}-config"
+			},
+			{
+				"hostPath": {
+					path: "/var/run/docker.sock",
+					type: "Socket"
+				},
+				"name": "docker-sock"
+			},
+			{
+				"hostPath": {
+					path: "/storage/gitlab-runner/{{name}}/store",
+					type: "DirectoryOrCreate"
+				},
+				"name": "{{name}}-store"
+			},
+			{
+				"hostPath": {
+					path: "/storage/gitlab-runner/{{name}}/cache",
+					type: "DirectoryOrCreate"
+				},
+				"name": "{{name}}-cache"
+			}
+		],
+
+		// Deployment update type overwrite
+		//-------------------------------------
+		"deploymentUpdateType": "Recreate"
+	}
+}
