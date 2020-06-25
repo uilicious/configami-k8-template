@@ -1,0 +1,59 @@
+##############################################################
+#
+# service routing 
+#
+##############################################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{name}}
+  namespace: {{namespace}}
+  annotations:
+    field.cattle.io/ipAddresses: "null"
+    field.cattle.io/targetDnsRecordIds: "null"
+    {{#if deploymentName}}
+    field.cattle.io/targetWorkloadIds: '["{{deploymentType}}:{{namespace}}:{{deploymentName}}"]'
+    {{else}}
+    field.cattle.io/targetWorkloadIds: '["{{deploymentType}}:{{namespace}}:{{name}}"]'
+    {{/if}}
+spec:
+  {{#if nodePort}}
+  type: NodePort
+  {{else}}
+  {{#if clusterIP}}
+  {{#contains clusterIP "None"}}
+  # No clusterIP is assigned - None
+  clusterIP: None
+  {{else}}
+  {{#contains clusterIP "auto"}}
+  # `clusterIP: "auto"` - nothing is assigned, lets system auto assign
+  {{else}}
+  # This is a fixed clusterIP to be assigned
+  clusterIP: {{clusterIP}}
+  {{/contains}}
+  {{/contains}}
+  {{else}}
+  # No clusterIP is assigned - None
+  clusterIP: None
+  {{/if}}
+  {{/if}}
+  ports:
+  - name: {{portName}}
+    port: {{port}}
+    protocol: {{portProtocol}}
+    targetPort: {{port}}
+    {{#if nodePort}}
+    nodePort: {{nodePort}}
+    {{/if}}
+  selector:
+    {{#if deploymentName}}
+    workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{deploymentName}}
+    {{else}}
+    workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+    {{/if}}
+  sessionAffinity: None
+  {{#if nodePort}}
+  {{else}}
+  type: ClusterIP
+  {{/if}}
+---

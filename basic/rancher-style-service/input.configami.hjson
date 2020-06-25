@@ -1,0 +1,35 @@
+//
+// Default input settings to use
+//
+{
+	// Namespace to use
+	//-------------------------------------------
+	"namespace" : "hello-namespace",
+	
+	// Deployment name to use
+	//-------------------------------------------
+	"name" : "hello-world",
+
+	// Rancher style deployment type
+	//-------------------------------------------
+	"deploymentType" : "deployment",
+
+	// Rancher style deployment target name
+	// defaults to "name"
+	//-------------------------------------------
+	//"deploymentName" : "hello-world",
+
+	// Container port to use
+	//-------------------------------------------
+	"port" :         80,
+	"portName":      "http-default",
+	"portProtocol" : "TCP",
+
+	// nodePort settings
+	//-------------------------------------------
+	// "nodePort": 30100
+
+	// clusterIP service mode
+	//-------------------------------------------
+	"clusterIP" : "auto"
+}

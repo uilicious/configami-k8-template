@@ -1,0 +1,6 @@
+{
+	"template" : "k8/basic/namespace", 
+	"input": { 
+		"name"   : "{{namespace}}",
+	}
+}

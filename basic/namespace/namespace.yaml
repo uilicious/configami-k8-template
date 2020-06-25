@@ -1,0 +1,15 @@
+---
+##############################################################
+#
+# Namespace
+#
+##############################################################
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{name}}
+  {{#if labels}}
+  labels: 
+    {{#json2yaml "labels"}}{{/json2yaml}}
+  {{/if}}
+---

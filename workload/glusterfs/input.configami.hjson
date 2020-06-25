@@ -1,0 +1,104 @@
+{
+	// Name(space) setting
+	//----------------------------------------
+	"name" :      "glusterfs",
+	"namespace" : "glusterfs",
+
+	// // Simple daemonset node affinity
+	// //-------------------------------------------
+	// "simpleNodeAffinity" : {
+	// 	"glusterfs-arbiter":"true"
+	// },
+
+	// Override to a manual rolling update
+	// this help avoid unintentional data loss
+	//----------------------------------------
+	"updateStrategyType": "OnDelete",
+
+	// hostNetwork mounting
+	//----------------------------------------
+	"hostNetwork": true,
+
+	// Resource request / limits
+	//-------------------------------------------
+	"requests" : {
+		"memory": "2000Mi",
+		"cpu": "1000m"
+	},
+	"limits" : {
+		"memory": "8000Mi",
+		"cpu": "4000m"
+	},
+
+	// GlusterFS image settings
+	//----------------------------------------
+	"image"    : "gluster/gluster-centos:gluster3u13_centos7",
+
+	// Tmp directory setup
+	//----------------------------------------
+	"setupTmpDir": true,
+
+	// securityContext setup
+	//----------------------------------------
+	securityContext: {
+		allowPrivilegeEscalation: true,
+		privileged: true
+	}
+
+	// Default Templating
+	//----------------------------------------
+	"_default" : {
+		"volumes": [
+			// This is used for the actual brick storage
+			{
+				"hostPath": {
+					"path": "/storage",
+					"type": "Directory"
+				},
+				"name": "storage"
+			},
+			// This is used to persist glusterfs settings
+			{
+				"hostPath": {
+					"path": "/storage/glusterfs-config/etc",
+					"type": "DirectoryOrCreate"
+				},
+				"name": "gfs-etc"
+			},
+			{
+				"hostPath": {
+					"path": "/storage/glusterfs-config/lib",
+					"type": "DirectoryOrCreate"
+				},
+				"name": "gfs-lib"
+			},
+			{
+				"hostPath": {
+					"path": "/storage/glusterfs-config/log",
+					"type": "DirectoryOrCreate"
+				},
+				"name": "gfs-log"
+			}
+		],
+		"volumeMounts": [
+			// This is used for the actual brick storage
+			{
+				"mountPath": "/storage",
+				"name": "storage"
+			},
+			// This is used to persist glusterfs settings
+			{
+				"mountPath": "/etc/glusterfs/",
+				"name": "gfs-etc"
+			},
+			{
+				"mountPath": "/var/lib/glusterd/",
+				"name": "gfs-lib"
+			},
+			{
+				"mountPath": "/var/log/glusterfs/",
+				"name": "gfs-log"
+			}
+		],
+	}
+}

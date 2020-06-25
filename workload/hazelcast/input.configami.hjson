@@ -1,0 +1,79 @@
+{
+    // Name(space) setting
+    //----------------------------------------
+    "name" :     "hazelcast",
+    "namespace": "hazelcast"
+
+	// Simple daemonset node affinity
+	//-------------------------------------------
+	// "simpleNodeAffinity" : {
+	// 	"node":"true"
+	// },
+
+    // Hazelcast env settings
+    //----------------------------------------
+	"environment": {
+        "GROUP_NAME": "hazelcast",
+        "CLUSTER_INIT_MIN_SIZE": "2",
+        "CLUSTER_INIT_WAIT_TIME": "10",
+        "CLUSTER_DNS_DISCOVERY_SERVICE": "hazelcast.hazelcast.svc.cluster.local",
+        "CLUSTER_DNS_DISCOVERY_TIMEOUT": "10",
+		"CLUSTER_DISCOVERY": "true",
+		"CLUSTER_MULTICAST": "false",
+		"CLUSTER_KUBERNETES": "false",
+        "MIN_HEAP_SIZE": "1g",
+        "MAX_HEAP_SIZE": "2g",
+        "JAVA_OPT": "-Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=600"
+    }
+	
+    // Override to a manual rolling update
+	// this help avoid unintentional data loss
+    //----------------------------------------
+	"updateStrategyType": "OnDelete"
+
+    // Custom prestop settings
+    //----------------------------------------
+	"prestopTime_seconds": 30,
+	"gracePeriod_seconds": 600,
+    "prestopCommandEcho": false,
+
+	// Complex port settings to use in-place of port
+	//-------------------------------------------
+	// "portsArray" : [
+	// 	{
+	// 		"containerPort": 80,
+	// 		"protocol": "TCP",
+	// 		"hostPort": 30800
+	// 	}
+	// ],
+
+	// Resource request / limits
+	//-------------------------------------------
+	"requests" : {
+		"memory": "1000Mi",
+		"cpu": "1000m"
+	},
+	"limits" : {
+		"memory": "3000Mi",
+		"cpu": "2000m"
+	},
+
+    // Hazelcast image settings
+    //----------------------------------------
+    "image"    : "uilicious/javacommons-hazelcast:3.11.4",
+
+	//-------------------------------------------
+	// Service port settings
+	//-------------------------------------------
+
+	// Container port to use
+	//-------------------------------------------
+	"port" :         5701,
+	"portName":      "tcp-hazelcast",
+	"portProtocol" : "TCP",
+
+	// clusterIP service mode
+	//-------------------------------------------
+	"clusterIP" :    "None"
+
+}

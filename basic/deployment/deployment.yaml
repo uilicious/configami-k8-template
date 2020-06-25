@@ -1,0 +1,119 @@
+##############################################################
+#
+# {{deploymentKind}} : {{namespace}} / {{name}}
+#
+##############################################################
+---
+apiVersion: apps/v1
+kind: {{deploymentKind}}
+metadata:
+  name: {{name}}
+  namespace: {{namespace}}
+  annotations:
+    workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+spec:
+  selector:
+    matchLabels:
+      workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+  {{#eq deploymentType "deployment"}}
+  replicas: {{scale}}
+  {{/eq}}
+  {{#eq deploymentType "deployment"}}
+  strategy:
+    {{#eq deploymentUpdateType "Recreate"}}
+    type: {{deploymentUpdateType}}
+    {{else}}
+    rollingUpdate:
+      maxSurge: {{rollingUpdate.maxSurge}}
+      maxUnavailable: {{rollingUpdate.maxUnavaliable}}
+    type: {{deploymentUpdateType}}
+    {{/eq}}
+  {{/eq}}
+  {{#eq deploymentType "daemonset"}}
+  updateStrategy:
+    rollingUpdate:
+      maxUnavailable: {{rollingUpdate.maxUnavaliable}}
+    type: {{updateStrategyType}}
+  {{/eq}}
+  template:
+    metadata:
+      labels:
+        workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+      {{#if annotations}}
+      annotations:
+        {{#json2yaml "annotations"}}{{/json2yaml}}
+      {{/if}}
+    spec:
+      {{#if simpleNodeAffinity}}
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              {{#each simpleNodeAffinity}}
+              - key: "{{@key}}"
+                operator: In
+                values:
+                - "{{this}}"
+              {{/each}}
+      {{/if}}
+      containers:
+      - name: {{name}}
+        image: "{{image}}"
+        imagePullPolicy: Always
+        {{#if command}}
+        command:
+        - {{command}}
+        {{/if}}
+        {{#if commandArgsArray}}
+        args:
+          {{#json2yaml "commandArgsArray"}}{{/json2yaml}}
+        {{/if}}
+        {{#if _enviornmentJSON}}
+        {{#json2yaml "_enviornmentJSON"}}{{/json2yaml}}
+        {{/if}}
+        {{#if securityContext}}
+        securityContext: 
+          {{#json2yaml "securityContext"}}{{/json2yaml}}
+        {{/if}}
+        {{#if prestopCommandEcho}}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - /bin/sh
+              - -c
+              - echo '### PRE STOP COMMAND STARTED - {{prestopTime_seconds}}s'; sleep {{prestopTime_seconds}}s; kill -SIGTERM 1;
+        {{/if}}
+        resources:
+          requests:
+            {{#json2yaml "requests"}}{{/json2yaml}}
+          limits:
+            {{#json2yaml "limits"}}{{/json2yaml}}
+        {{#if volumeMounts}}
+        volumeMounts:
+        {{#json2yaml "volumeMounts"}}{{/json2yaml}}
+        {{/if}}
+        {{#if portsArray}}
+        ports:
+          {{#json2yaml "portsArray"}}{{/json2yaml}}
+        {{else}}
+        {{#if port}}
+        ports:
+        - containerPort: {{port}}
+        {{/if}}
+        {{/if}}
+      {{#if hostNetwork}}
+      hostNetwork: {{hostNetwork}}
+      {{/if}}
+      {{#if volumes}}
+      volumes:
+      {{#json2yaml "volumes"}}{{/json2yaml}}
+      {{/if}}
+      {{#if imagePullSecrets}}
+      imagePullSecrets:
+      - name: {{imagePullSecrets}}
+      {{/if}}
+      terminationGracePeriodSeconds: {{add prestopTime_seconds gracePeriod_seconds}}
+      restartPolicy: Always
+---
