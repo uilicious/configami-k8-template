@@ -19,6 +19,14 @@ data:
     # Remove existing config.toml if present
     # rm /etc/gitlab-runner/config.toml
 
+    # Exit with the given error message
+    exit_with_message() {
+      error_msg=$1
+      echo "[ERROR] $error_msg - exiting in 600s"; 
+      sleep 600s; 
+      exit 1;
+    }
+
     # Register runner, if not previously registered
     if [ ! -f /etc/gitlab-runner/config.toml ]; then
       gitlab-runner register --non-interactive \
@@ -31,12 +39,22 @@ data:
         --run-untagged=true --locked=false \
         --docker-image "docker:19.03.11" \
         --docker-volumes /var/run/docker.sock:/var/run/docker.sock \
-        --template-config "/register.toml"
+        --template-config "/register.toml" || exit_with_message "failed to register gitlab runner"
     fi
 
     # It should already be registered by now
     # Get the worker token - and update the config
     export GITLAB_RUNNER_TOKEN=$(cat /etc/gitlab-runner/config.toml | grep "token =" | sed 's/^.*"\(.*\)".*$/\1/')
+
+    # Check for blank token
+    if [ -z "$GITLAB_RUNNER_TOKEN" ]; then
+      exit_with_message "Empty gitlab runner token"
+    fi
+
+    # Check for existing token conflict
+    if [ "$GITLAB_RUNNER_TOKEN" -eq "$GITLAB_REGISTER_TOKEN" ]; then
+      exit_with_message "Runner token identical to register token"
+    fi
 
     # Update the runner config
     cat /register.toml | sed -e "s/^\(.*token = \).*$/\1\"$GITLAB_RUNNER_TOKEN\"/" > /etc/gitlab-runner/config.toml
