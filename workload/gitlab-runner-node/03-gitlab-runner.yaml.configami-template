@@ -80,18 +80,12 @@
 				"name": "docker-sock"
 			},
 			{
-				"hostPath": {
-					path: "/storage/gitlab-runner/{{name}}/store",
-					type: "DirectoryOrCreate"
-				},
-				"name": "{{name}}-store"
+				"name": "{{name}}-store",
+				"emptyDir": {}
 			},
 			{
-				"hostPath": {
-					path: "/storage/gitlab-runner/{{name}}/cache",
-					type: "DirectoryOrCreate"
-				},
-				"name": "{{name}}-cache"
+				"name": "{{name}}-cache",
+				"emptyDir": {}
 			}
 		],
 
