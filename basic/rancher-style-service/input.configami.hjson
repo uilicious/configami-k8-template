@@ -32,4 +32,8 @@
 	// clusterIP service mode
 	//-------------------------------------------
 	"clusterIP" : "auto"
+
+	// Topology key settings
+	//-------------------------------------------
+	"disableTopologyKeys": false
 }

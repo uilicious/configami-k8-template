@@ -55,12 +55,16 @@ spec:
   {{#contains clusterIP "None"}}
   # No topologyKeys assigned - not compatible with clusterIP "None"
   {{else}}
+  {{#if disableTopologyKeys}}
+  # Topology keys are disabled
+  {{else}}
   # Configure topologyKeys to prefer localhost, followed by cluster zone/region, etc
   topologyKeys:
     - "kubernetes.io/hostname"
     - "topology.kubernetes.io/zone"
     - "topology.kubernetes.io/region"
     - "*"
+  {{/if}}
   {{/contains}}
   {{#if nodePort}}
   {{else}}
