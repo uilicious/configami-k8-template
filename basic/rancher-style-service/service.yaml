@@ -52,6 +52,16 @@ spec:
     workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
     {{/if}}
   sessionAffinity: None
+  {{#contains clusterIP "None"}}
+  # No topologyKeys assigned - not compatible with clusterIP "None"
+  {{else}}
+  # Configure topologyKeys to prefer localhost, followed by cluster zone/region, etc
+  topologyKeys:
+    - "kubernetes.io/hostname"
+    - "topology.kubernetes.io/zone"
+    - "topology.kubernetes.io/region"
+    - "*"
+  {{/contains}}
   {{#if nodePort}}
   {{else}}
   type: ClusterIP
