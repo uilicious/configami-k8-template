@@ -103,6 +103,10 @@ spec:
         - containerPort: {{port}}
         {{/if}}
         {{/if}}
+        {{#if readinessProbe}}
+        readinessProbe:
+          {{#json2yaml "readinessProbe"}}{{/json2yaml}}
+        {{/if}}
       {{#if hostNetwork}}
       hostNetwork: {{hostNetwork}}
       {{/if}}

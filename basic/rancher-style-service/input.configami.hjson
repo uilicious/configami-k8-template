@@ -36,4 +36,19 @@
 	// Topology key settings
 	//-------------------------------------------
 	"disableTopologyKeys": false
+
+	// // Optional readiness probe
+	// //-------------------------------------------
+	// "readinessProbe": {
+	// 	failureThreshold: 3
+	// 	httpGet: {
+	// 		path: /
+	// 		port: 80
+	// 		scheme: HTTP
+	// 	}
+	// 	initialDelaySeconds: 5
+	// 	periodSeconds: 5
+	// 	successThreshold: 2
+	// 	timeoutSeconds: 5
+	// }
 }
