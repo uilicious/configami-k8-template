@@ -49,7 +49,7 @@
 	// Rolling Update setting
 	//-------------------------------------------
 	"rollingUpdate": {
-		"maxSurge": 99,
+		"maxSurge": 12,
 		"maxUnavaliable": 0
 	},
 	"updateStrategyType": "RollingUpdate"
