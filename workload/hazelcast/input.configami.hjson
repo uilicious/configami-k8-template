@@ -1,8 +1,8 @@
 {
-    // Name(space) setting
-    //----------------------------------------
-    "name" :     "hazelcast",
-    "namespace": "hazelcast"
+	// Name(space) setting
+	//----------------------------------------
+	"name" :     "hazelcast",
+	"namespace": "hazelcast"
 
 	// Simple daemonset node affinity
 	//-------------------------------------------
@@ -10,47 +10,35 @@
 	// 	"node":"true"
 	// },
 
-    // Hazelcast env settings
-    //----------------------------------------
-	"environment": {
-        "GROUP_NAME": "hazelcast",
-        "CLUSTER_INIT_MIN_SIZE": "2",
-        "CLUSTER_INIT_WAIT_TIME": "10",
-        "CLUSTER_DNS_DISCOVERY_SERVICE": "hazelcast.hazelcast.svc.cluster.local",
-        "CLUSTER_DNS_DISCOVERY_TIMEOUT": "10",
-		"CLUSTER_DISCOVERY": "true",
-		"CLUSTER_MULTICAST": "false",
-		"CLUSTER_KUBERNETES": "false",
-        "MIN_HEAP_SIZE": "1g",
-        "MAX_HEAP_SIZE": "2g",
-        "JAVA_OPT": "-Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=600"
-    }
-	
-    // Override to a manual rolling update
-	// this help avoid unintentional data loss
-    //----------------------------------------
-	"updateStrategyType": "OnDelete"
+	// Hazelcast env settings
+	//----------------------------------------
+	// "environment": {
+	// 	"CLUSTER_NAME": "{{name}}",
+	// 	"CLUSTER_INIT_MIN_SIZE": "2",
+	// 	"CLUSTER_INIT_WAIT_TIME": "10",
+	// 	"CLUSTER_DNS_DISCOVERY_SERVICE": "{{name}}.{{namespace}}.svc.cluster.local",
+	// 	"CLUSTER_DNS_DISCOVERY_TIMEOUT": "10",
+	// 	"CLUSTER_DISCOVERY": "true",
+	// 	"CLUSTER_MULTICAST": "false",
+	// 	"CLUSTER_KUBERNETES": "false",
+	// 	"JAVA_OPT": "-Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=600"
+	// },
 
-    // Custom prestop settings
-    //----------------------------------------
+	// Override to a manual rolling update
+	// this help avoid unintentional data loss
+	//----------------------------------------
+	"updateStrategyType": "OnDelete",
+
+	// Custom prestop settings
+	//----------------------------------------
 	"prestopTime_seconds": 30,
 	"gracePeriod_seconds": 600,
-    "prestopCommandEcho": false,
-
-	// Complex port settings to use in-place of port
-	//-------------------------------------------
-	// "portsArray" : [
-	// 	{
-	// 		"containerPort": 80,
-	// 		"protocol": "TCP",
-	// 		"hostPort": 30800
-	// 	}
-	// ],
+	"prestopCommandEcho": false,
 
 	// Resource request / limits
 	//-------------------------------------------
 	"requests" : {
-		"memory": "1000Mi",
+		"memory": "3000Mi",
 		"cpu": "1000m"
 	},
 	"limits" : {
@@ -58,9 +46,9 @@
 		"cpu": "2000m"
 	},
 
-    // Hazelcast image settings
-    //----------------------------------------
-    "image"    : "uilicious/javacommons-hazelcast:3.11.4",
+	// Hazelcast image settings
+	//----------------------------------------
+	"image"    : "uilicious/javacommons-hazelcast:4.0.2",
 
 	//-------------------------------------------
 	// Service port settings

@@ -1,3 +1,23 @@
 {
-	"template": "k8/basic/daemonset-with-service"
+	"template": "k8/basic/daemonset-with-service",
+
+	"input_base": {
+
+		// Hazelcast env settings
+		//----------------------------------------
+		"environment": {
+			"CLUSTER_NAME": "{{name}}",
+			"CLUSTER_INIT_MIN_SIZE": "2",
+			"CLUSTER_INIT_WAIT_TIME": "10",
+			"CLUSTER_DNS_DISCOVERY_SERVICE": "{{name}}.{{namespace}}.svc.cluster.local",
+			"CLUSTER_DNS_DISCOVERY_TIMEOUT": "10",
+			"CLUSTER_DISCOVERY": "true",
+			"CLUSTER_MULTICAST": "false",
+			"CLUSTER_KUBERNETES": "false",
+			// "MIN_HEAP_SIZE": "2.5g",
+			// "MAX_HEAP_SIZE": "2.5g",
+			"JAVA_OPT": "-Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=600"
+		},
+		
+	}
 }
