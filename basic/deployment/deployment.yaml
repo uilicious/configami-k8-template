@@ -107,6 +107,10 @@ spec:
         readinessProbe:
           {{#json2yaml "readinessProbe"}}{{/json2yaml}}
         {{/if}}
+        {{#if livenessProbe}}
+        livenessProbe:
+          {{#json2yaml "livenessProbe"}}{{/json2yaml}}
+        {{/if}}
       {{#if hostNetwork}}
       hostNetwork: {{hostNetwork}}
       {{/if}}

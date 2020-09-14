@@ -53,6 +53,14 @@ module.exports = function(cg, input) {
 		})
 	}
 
+	//
+	// Configure healthcheckProbe
+	//
+	if( input.healthcheckProbe ) {
+		input.livenessProbe = input.livenessProbe || input.healthcheckProbe;
+		input.readinessProbe = input.readinessProbe || input.healthcheckProbe;
+	}
+
 	// Return the final input
 	return input;
 }
