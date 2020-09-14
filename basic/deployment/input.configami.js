@@ -57,8 +57,13 @@ module.exports = function(cg, input) {
 	// Configure healthcheckProbe
 	//
 	if( input.healthcheckProbe ) {
-		input.livenessProbe = input.livenessProbe || input.healthcheckProbe;
 		input.readinessProbe = input.readinessProbe || input.healthcheckProbe;
+		input.livenessProbe = JSON.parse(JSON.stringify(input.livenessProbe || input.healthcheckProbe));
+	}
+
+	// Normalize livenessProbe successThreshold to 1 (according to k8 spec)
+	if( input.livenessProbe && input.livenessProbe.successThreshold ) {
+		input.livenessProbe.successThreshold = 1;
 	}
 
 	// Return the final input
