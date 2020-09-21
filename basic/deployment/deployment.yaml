@@ -114,6 +114,9 @@ spec:
       {{#if hostNetwork}}
       hostNetwork: {{hostNetwork}}
       {{/if}}
+      {{#if serviceAccountName}}
+      serviceAccountName: {{serviceAccountName}}
+      {{/if}}
       {{#if volumes}}
       volumes:
       {{#json2yaml "volumes"}}{{/json2yaml}}
