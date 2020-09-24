@@ -57,6 +57,10 @@ spec:
                 - "{{this}}"
               {{/each}}
       {{/if}}
+      {{#if specSecurityContext}}
+      securityContext: 
+        {{#json2yaml "specSecurityContext"}}{{/json2yaml}}
+      {{/if}}
       containers:
       - name: {{name}}
         image: "{{image}}"
