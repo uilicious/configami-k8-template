@@ -58,21 +58,21 @@ spec:
   {{#if serviceTopologyKeyPreference}}
   # Configure topologyKeys to prefer localhost, followed by cluster zone/region, etc
   topologyKeys:
-    {{#contains serviceTopologyKeyPreference "host"}}
+    {{#eq serviceTopologyKeyPreference "host"}}
     # Host preferred topology key routing
     - "kubernetes.io/hostname"
     - "topology.kubernetes.io/zone"
     - "topology.kubernetes.io/region"
-    {{/contains}}
-    {{#contains serviceTopologyKeyPreference "zone"}}
+    {{/eq}}
+    {{#eq serviceTopologyKeyPreference "zone"}}
     # Zone preferred topology key routing
     - "topology.kubernetes.io/zone"
     - "topology.kubernetes.io/region"
-    {{/contains}}
-    {{#contains serviceTopologyKeyPreference "region"}}
+    {{/eq}}
+    {{#eq serviceTopologyKeyPreference "region"}}
     # Region preferred topology key routing
     - "topology.kubernetes.io/region"
-    {{/contains}}
+    {{/eq}}
     - "*"
   {{else}}
   # Topology keys are disabled

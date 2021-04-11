@@ -103,6 +103,17 @@
 	// 	capabilities: {},
 	// }
 
+	// Topology Spread Constraints support
+	//
+	// This should only be enabled for 
+	// kubernetes 1.19 and above only
+	//-------------------------------------------
+	"containerTopologySpread" : {
+		// "enable": false,
+		"zoneTopology" : "spread",
+		"hostTopology" : "spread"
+	},
+
 	// Rancher style deployment type
 	//
 	// [DO NOT MODIFY] this is used internally
