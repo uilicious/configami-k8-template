@@ -55,15 +55,27 @@ spec:
   {{#contains clusterIP "None"}}
   # No topologyKeys assigned - not compatible with clusterIP "None"
   {{else}}
-  {{#if disableTopologyKeys}}
-  # Topology keys are disabled
-  {{else}}
+  {{#if serviceTopologyKeyPreference}}
   # Configure topologyKeys to prefer localhost, followed by cluster zone/region, etc
   topologyKeys:
+    {{#contains serviceTopologyKeyPreference "host"}}
+    # Host preferred topology key routing
     - "kubernetes.io/hostname"
     - "topology.kubernetes.io/zone"
     - "topology.kubernetes.io/region"
+    {{/contains}}
+    {{#contains serviceTopologyKeyPreference "zone"}}
+    # Zone preferred topology key routing
+    - "topology.kubernetes.io/zone"
+    - "topology.kubernetes.io/region"
+    {{/contains}}
+    {{#contains serviceTopologyKeyPreference "region"}}
+    # Region preferred topology key routing
+    - "topology.kubernetes.io/region"
+    {{/contains}}
     - "*"
+  {{else}}
+  # Topology keys are disabled
   {{/if}}
   {{/contains}}
   {{#if nodePort}}

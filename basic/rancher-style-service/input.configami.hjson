@@ -35,7 +35,15 @@
 
 	// Topology key settings
 	//-------------------------------------------
-	"disableTopologyKeys": false
+
+	//
+	// Configure to either
+	//
+	// - host
+	// - zone
+	// - region
+	//
+	"serviceTopologyKeyPreference": false
 
 	// // Optional readiness probe
 	// //-------------------------------------------
