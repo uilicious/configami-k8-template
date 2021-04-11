@@ -68,6 +68,9 @@ spec:
         {{else}}
         whenUnsatisfiable: ScheduleAnyway
         {{/eq}}
+        labelSelector:
+          matchLabels:
+            workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
       {{/if}}
       {{#if containerTopologySpread.hostTopology}}
       - maxSkew: 1
@@ -77,6 +80,9 @@ spec:
         {{else}}
         whenUnsatisfiable: ScheduleAnyway
         {{/eq}}
+        labelSelector:
+          matchLabels:
+            workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
       {{/if}}
       {{/if}}
       {{#if specSecurityContext}}
