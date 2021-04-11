@@ -1,0 +1,13 @@
+{
+    //
+    // Enable / Disable the docker debug container
+    //
+    // Because containerD is the default runtime from kubernetes 1.19+ onwards
+    // docker debug containers may not fully work - note that this may also have unexpected side effects
+    // on containers which depends on the docker runtime (like CI/CD pipelines) who may need to switch
+    // to using buildx, DIND, or other means of docker "building"
+    //
+    // Default: false - this would work in all environments, and leave existing installs alone
+    //
+    "dockerDebugContainer": false
+}

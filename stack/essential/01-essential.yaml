@@ -106,6 +106,7 @@ spec:
           path: /var/lib/docker/containers
         name: host-docker-container
 ---
+{{#if dockerDebugContainer}}
 ##############################################################
 #
 # docker-debug daemonset
@@ -161,6 +162,7 @@ spec:
           type: Socket
         name: docker-sock
 ---
+{{/if}}
 ##############################################################
 #
 # hello-world daemonset
