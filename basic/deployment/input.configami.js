@@ -68,7 +68,7 @@ module.exports = function(cg, input) {
 
 	// Detect either node affinity
 	if( input.simpleNodeAffinity || input.customNodeAffinity ) {
-		input._hasNodeAffinity
+		input._hasNodeAffinity = true
 	}
 
 	// Return the final input
