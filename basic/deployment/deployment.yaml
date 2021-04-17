@@ -44,11 +44,12 @@ spec:
         {{#json2yaml "annotations"}}{{/json2yaml}}
       {{/if}}
     spec:
-      {{#if simpleNodeAffinity}}
+      {{#if _hasNodeAffinity}}
       affinity:
         nodeAffinity:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
+            {{#if simpleNodeAffinity}}
             - matchExpressions:
               {{#each simpleNodeAffinity}}
               - key: "{{@key}}"
@@ -56,6 +57,10 @@ spec:
                 values:
                 - "{{this}}"
               {{/each}}
+            {{/if}}
+            {{#if customNodeAffinity}}
+            {{#json2yaml "customNodeAffinity"}}{{/json2yaml}}
+            {{/if}}
       {{/if}}
       {{#if containerTopologySpread.enable}}
       # Enable containerTopologySpread, for better container distribution in the cluster

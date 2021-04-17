@@ -66,6 +66,11 @@ module.exports = function(cg, input) {
 		input.livenessProbe.successThreshold = 1;
 	}
 
+	// Detect either node affinity
+	if( input.simpleNodeAffinity || input.customNodeAffinity ) {
+		input._hasNodeAffinity
+	}
+
 	// Return the final input
 	return input;
 }
