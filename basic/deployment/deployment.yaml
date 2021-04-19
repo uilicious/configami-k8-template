@@ -65,10 +65,10 @@ spec:
       {{#if containerTopologySpread.enable}}
       # Enable containerTopologySpread, for better container distribution in the cluster
       topologySpreadConstraints:
-      {{#if containerTopologySpread.zoneTopology}}
+      {{#if containerTopologySpread.hostTopology}}
       - maxSkew: 1
-        topologyKey: topology.kubernetes.io/zone
-        {{#eq containerTopologySpread.zoneTopology "enforce"}}
+        topologyKey: kubernetes.io/hostname
+        {{#eq containerTopologySpread.hostTopology "enforce"}}
         whenUnsatisfiable: DoNotSchedule
         {{else}}
         whenUnsatisfiable: ScheduleAnyway
@@ -77,10 +77,10 @@ spec:
           matchLabels:
             workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
       {{/if}}
-      {{#if containerTopologySpread.hostTopology}}
+      {{#if containerTopologySpread.zoneTopology}}
       - maxSkew: 1
-        topologyKey: kubernetes.io/hostname
-        {{#eq containerTopologySpread.hostTopology "enforce"}}
+        topologyKey: topology.kubernetes.io/zone
+        {{#eq containerTopologySpread.zoneTopology "enforce"}}
         whenUnsatisfiable: DoNotSchedule
         {{else}}
         whenUnsatisfiable: ScheduleAnyway
