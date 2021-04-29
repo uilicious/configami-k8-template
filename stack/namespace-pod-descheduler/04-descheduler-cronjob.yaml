@@ -58,6 +58,7 @@ spec:
             command:
               - "/bin/descheduler"
             args:
+              - "--logtostderr"
               - "--policy-config-file"
               - "/policy-dir/policy.yaml"
               - "--v"
