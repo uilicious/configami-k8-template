@@ -1,0 +1,13 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{deschedulerName}}-policy-configmap
+  namespace: {{namespace}}
+data:
+  policy.yaml: |
+    apiVersion: "descheduler/v1alpha1"
+    kind: "DeschedulerPolicy"
+    strategies:
+      {{#json2yaml "deschedulerPolicy"}}{{/json2yaml}}
+---
