@@ -97,7 +97,7 @@ spec:
       containers:
       - name: {{name}}
         image: "{{image}}"
-        imagePullPolicy: Always
+        imagePullPolicy: {{imagePullPolicy}}
         {{#if command}}
         command:
         - {{command}}

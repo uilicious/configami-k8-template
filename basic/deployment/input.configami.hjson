@@ -13,6 +13,7 @@
 	// Container to use
 	//-------------------------------------------
 	"image" : "picoded/hello-world",
+	"imagePullPolicy": "Always",
 
 	// Simple node affinity
 	//-------------------------------------------
