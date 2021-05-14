@@ -71,6 +71,11 @@ module.exports = function(cg, input) {
 		input._hasNodeAffinity = true
 	}
 
+	// Allow an array of imagePullSecrets
+	if( input.imagePullSecrets && !Array.isArray(input.imagePullSecrets) ) {
+		input.imagePullSecrets = [ input.imagePullSecrets ];
+	}
+
 	// Return the final input
 	return input;
 }

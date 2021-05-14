@@ -150,6 +150,7 @@ spec:
         {{/if}}
       {{#if hostNetwork}}
       hostNetwork: {{hostNetwork}}
+      dnsPolicy: ClusterFirstWithHostNet
       {{/if}}
       {{#if serviceAccountName}}
       serviceAccountName: {{serviceAccountName}}
@@ -160,7 +161,9 @@ spec:
       {{/if}}
       {{#if imagePullSecrets}}
       imagePullSecrets:
-      - name: {{imagePullSecrets}}
+      {{#each imagePullSecrets}}
+      - name: {{this}}
+      {{/each}}
       {{/if}}
       terminationGracePeriodSeconds: {{add prestopTime_seconds gracePeriod_seconds}}
       restartPolicy: Always
