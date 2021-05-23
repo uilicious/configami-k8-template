@@ -11,6 +11,11 @@ module.exports = function(cg, input) {
 		const eKeys = Object.keys( eObj )
 		const _enviornmentArr = [];
 
+		// Custom enviornmentList overwrite
+		if( input.enviornmentList ) {
+			Array.prototype.push.apply(_enviornmentArr, input.enviornmentList);
+		}
+
 		// For each key remap it
 		for(const key of eKeys) {
 			_enviornmentArr.push({
