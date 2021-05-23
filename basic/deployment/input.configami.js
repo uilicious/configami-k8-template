@@ -70,6 +70,12 @@ module.exports = function(cg, input) {
 	if( input.simpleNodeAffinity || input.customNodeAffinity ) {
 		input._hasNodeAffinity = true
 	}
+	if( input.simplePodAffinity || input.customPodAffinity ) {
+		input._hasPodAffinity = true
+	}
+	if( input._hasNodeAffinity || input._hasPodAffinity) {
+		input._hasAffinity = true;
+	}
 
 	// Allow an array of imagePullSecrets
 	if( input.imagePullSecrets && !Array.isArray(input.imagePullSecrets) ) {
