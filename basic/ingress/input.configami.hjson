@@ -61,6 +61,9 @@
 
 		// Enable SSL redirect by default
 		"ssl-redirect": "true"
+
+		// Backend protocol to use (Default to HTTP)
+		"backend-protocol": "HTTP"
 	}
 
 	// Annotation
