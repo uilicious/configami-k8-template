@@ -1,6 +1,7 @@
 {
 	// name - for the namespace
-	"name" : "hello-namespace",
+	// alternatively, just use "name"
+	// "namespace" : "hello-namespace",
 
 	// optional labels - for the namespace
 	// "labels" : {

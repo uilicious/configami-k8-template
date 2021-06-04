@@ -7,7 +7,11 @@
 apiVersion: v1
 kind: Namespace
 metadata:
+  {{#if namespace}}
+  name: {{namespace}}
+  {{else}}
   name: {{name}}
+  {{/if}}
   {{#if labels}}
   labels: 
     {{#json2yaml "labels"}}{{/json2yaml}}
