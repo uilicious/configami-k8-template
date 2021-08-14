@@ -16,6 +16,12 @@ metadata:
     {{#each annotation}}
     {{@key}}: "{{this}}"
     {{/each}}
+    {{#if basicHttpAuth.enable}}
+    nginx.ingress.kubernetes.io/auth-type: basic
+    nginx.ingress.kubernetes.io/auth-secret-type: auth-file
+    nginx.ingress.kubernetes.io/auth-secret: {{name}}-auth-file
+    nginx.ingress.kubernetes.io/auth-realm: "Secured Site"
+    {{/if}}
 spec:
   rules:
   - host: {{host}}
@@ -35,3 +41,19 @@ spec:
     secretName: {{secretName}}
     {{/if}}
 ---
+{{#if basicHttpAuth.enable}}
+##############################################################
+#
+# auth secret file
+#
+##############################################################
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{name}}-auth-file
+  namespace: {{namespace}}
+data:
+  auth: |
+    {{{_authFileB64}}}
+---
+{{/if}}

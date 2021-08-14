@@ -60,11 +60,11 @@
 		"proxy-send-timeout": "300s",
 
 		// Enable SSL redirect by default
-		"ssl-redirect": "true"
+		"ssl-redirect": "true",
 
 		// Backend protocol to use (Default to HTTP)
 		"backend-protocol": "HTTP"
-	}
+	},
 
 	// Annotation
 	//
@@ -79,5 +79,14 @@
 		// 	gzip_types text/html text/plain application/xml;
 		// 	gzip_min_length 1000;
 		// 	'''
+	},
+
+	// HTTP Auth support if required
+	//------------------------------------------------------
+	"basicHttpAuth" : {
+		"enable": false,
+		"userMap": {
+			// "username" : "plain-text-password"
+		}
 	}
 }
