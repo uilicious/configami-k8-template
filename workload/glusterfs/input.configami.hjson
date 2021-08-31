@@ -32,7 +32,7 @@
 
 	// GlusterFS image settings
 	//----------------------------------------
-	"image"    : "gluster/gluster-centos:gluster3u13_centos7",
+	"image"    : "uilicious/gluster-server:9.3",
 
 	// Tmp directory setup
 	//----------------------------------------
