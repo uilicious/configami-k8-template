@@ -113,6 +113,10 @@ spec:
       securityContext: 
         {{#json2yaml "specSecurityContext"}}{{/json2yaml}}
       {{/if}}
+      {{#if specTolerations}}
+      tolerations: 
+        {{#json2yaml "specTolerations"}}{{/json2yaml}}
+      {{/if}}
       containers:
       - name: {{name}}
         image: "{{image}}"
