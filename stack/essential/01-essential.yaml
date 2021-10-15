@@ -53,6 +53,10 @@ spec:
           securityContext:
             allowPrivilegeEscalation: true
             privileged: true
+      {{#if specTolerations}}
+      tolerations: 
+        {{#json2yaml "specTolerations"}}{{/json2yaml}}
+      {{/if}}
 ---
 ##############################################################
 #
@@ -105,6 +109,10 @@ spec:
       - hostPath:
           path: /var/lib/docker/containers
         name: host-docker-container
+      {{#if specTolerations}}
+      tolerations: 
+        {{#json2yaml "specTolerations"}}{{/json2yaml}}
+      {{/if}}
 ---
 {{#if dockerDebugContainer}}
 ##############################################################
@@ -161,6 +169,10 @@ spec:
           path: /var/run/docker.sock
           type: Socket
         name: docker-sock
+      {{#if specTolerations}}
+      tolerations: 
+        {{#json2yaml "specTolerations"}}{{/json2yaml}}
+      {{/if}}
 ---
 {{/if}}
 ##############################################################
@@ -203,6 +215,10 @@ spec:
               memory: 4Mi
             limits:
               memory: 16Mi
+      {{#if specTolerations}}
+      tolerations: 
+        {{#json2yaml "specTolerations"}}{{/json2yaml}}
+      {{/if}}
 ---
 ##############################################################
 #
