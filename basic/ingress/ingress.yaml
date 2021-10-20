@@ -4,7 +4,7 @@
 #
 ##############################################################
 ---
-apiVersion: extensions/v1beta1
+apiVersion: {{ingressApiVersion}}
 kind: Ingress
 metadata:
   name: {{name}}
@@ -30,9 +30,19 @@ spec:
       {{#if ingressPath}}
       {{#json2yaml "ingressPath"}}{{/json2yaml}}
       {{else}}
+      {{#eq ingressApiVersion "extensions/v1beta1"}}
       - backend:
           serviceName: {{serviceName}}
           servicePort: {{servicePort}}
+      {{else}}
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: {{serviceName}}
+            port:
+              number: {{servicePort}}
+      {{/eq}}
       {{/if}}
   tls:
   - hosts:

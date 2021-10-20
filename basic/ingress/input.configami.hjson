@@ -71,6 +71,7 @@
 	// Annotation options, in raw format (no prefix)
 	//------------------------------------------------------
 	"annotation": {
+		"kubernetes.io/ingress.class" : "nginx"
 		// "nginx.org/server-snippets": 
 		// 	'''
 		// 	gzip on;
@@ -88,5 +89,18 @@
 		"userMap": {
 			// "username" : "plain-text-password"
 		}
-	}
+	},
+
+	// API version of ingress path
+	// this is only needed for versions older then v1.14
+	//------------------------------------------------------
+
+	// Current version
+	"ingressApiVersion": "networking.k8s.io/v1"
+
+	// Version before v1.14
+	// "ingressApiVersion": "extensions/v1beta1"
+
+	// Ingress class, this is only applicable to the newer api version
+	// "ingressClass" : "nginx"
 }
