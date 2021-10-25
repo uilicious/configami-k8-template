@@ -136,6 +136,10 @@ spec:
         securityContext: 
           {{#json2yaml "securityContext"}}{{/json2yaml}}
         {{/if}}
+        {{#if lifecycle}}
+        lifecycle:
+          {{#json2yaml "lifecycle"}}{{/json2yaml}}
+        {{else}}
         {{#if prestopCommandEcho}}
         lifecycle:
           preStop:
@@ -144,6 +148,7 @@ spec:
               - /bin/sh
               - -c
               - echo '### PRE STOP COMMAND STARTED - {{prestopTime_seconds}}s'; sleep {{prestopTime_seconds}}s; kill -SIGTERM 1;
+        {{/if}}
         {{/if}}
         resources:
           requests:
