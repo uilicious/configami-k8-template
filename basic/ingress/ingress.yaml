@@ -11,10 +11,10 @@ metadata:
   namespace: {{namespace}}
   annotations:
     {{#each ingressAnnotation}}
-    nginx.ingress.kubernetes.io/{{@key}}: "{{this}}"
+    nginx.ingress.kubernetes.io/{{@key}}: "{{{this}}}"
     {{/each}}
     {{#each annotation}}
-    {{@key}}: "{{this}}"
+    {{@key}}: "{{{this}}}"
     {{/each}}
     {{#if basicHttpAuth.enable}}
     nginx.ingress.kubernetes.io/auth-type: basic

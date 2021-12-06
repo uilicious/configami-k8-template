@@ -16,6 +16,13 @@ module.exports = function(cg, input, output) {
 	})["namespace.yaml"];
 
 	//
+	// Setup ingress public-lb
+	//
+	if( input.ingress && input.ingress.host ) {
+		output["05-public-lb.yaml"] = cg.applyTemplate( "k8/basic/ingress", input.ingress )["ingress.yaml"];
+	}
+
+	//
 	// Get the simple input, with deployment zone specific config overwrites stripped off
 	//
 	let simpleInput = cg.joinNestedObject({}, input);

@@ -23,6 +23,28 @@ module.exports = function(cg, input) {
     
     }
 
+    // Escape the double quotes with a "\"
+    function escapeQuotes(input) {
+        if( String.prototype.replaceAll ) {
+            return input.replaceAll("\"", "\\\"");
+        } else {
+            return input.split("\"").join("\\\"");
+        }
+    }
+
+    //
+    // Handle the character escape for ingressAnnotation
+    //
+    let ingressAnnotation = input.ingressAnnotation;
+    for( let key in ingressAnnotation ) {
+        ingressAnnotation[key] = escapeQuotes(ingressAnnotation[key] || "")
+    }
+
+    let annotation = input.annotation;
+    for( let key in annotation ) {
+        annotation[key] = escapeQuotes(annotation[key] || "")
+    }
+
 	// Return the final input
 	return input;
 }

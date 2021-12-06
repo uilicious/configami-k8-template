@@ -67,8 +67,10 @@
 	//
 	/////////////////////////////////////////////
 
-	// "ingress": {
-	// 	"host": "awesome.example.com",
-	//		"secretName": "awesome-secret-for-tls"
-	// }
+	"ingress": {
+		// Configure ingress, host / secretName / other settings if needed
+		// ------------------------------------------
+		// "host": "awesome.example.com",
+		// "secretName": "awesome-secret-for-tls"
+	}
 }
