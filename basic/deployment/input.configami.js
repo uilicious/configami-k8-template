@@ -66,6 +66,11 @@ module.exports = function(cg, input) {
 		input.livenessProbe = JSON.parse(JSON.stringify(input.livenessProbe || input.healthcheckProbe));
 	}
 
+	// Polyfill commandArgsArray handling
+	if( input.args ) {
+		input.commandArgsArray = input.commandArgsArray || input.args;
+	}
+
 	// Normalize livenessProbe successThreshold to 1 (according to k8 spec)
 	if( input.livenessProbe && input.livenessProbe.successThreshold ) {
 		input.livenessProbe.successThreshold = 1;
