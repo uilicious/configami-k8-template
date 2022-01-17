@@ -39,6 +39,9 @@ spec:
     metadata:
       labels:
         workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+        {{#if labels}}
+        {{#json2yaml "labels"}}{{/json2yaml}}
+        {{/if}}
       {{#if annotations}}
       annotations:
         {{#json2yaml "annotations"}}{{/json2yaml}}
