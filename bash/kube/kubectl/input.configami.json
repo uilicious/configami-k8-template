@@ -1,0 +1,7 @@
+{
+	"KUBECONFIG_PATH": "",
+	// "KUBECONFIG_PATH": "$SCRIPT_DIR/kubeconfig.yaml",
+	"KUBECTL_PATH": "kubectl"
+
+	// "rancherProjectID" : "c-x:p-z"
+}
