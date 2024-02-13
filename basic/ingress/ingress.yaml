@@ -23,6 +23,9 @@ metadata:
     nginx.ingress.kubernetes.io/auth-realm: "Secured Site"
     {{/if}}
 spec:
+  {{#if ingressClassName}}
+  ingressClassName: {{ingressClassName}}
+  {{/if}}
   rules:
   - host: {{host}}
     http:
