@@ -46,10 +46,16 @@ spec:
     nodePort: {{nodePort}}
     {{/if}}
   selector:
+    {{#if customSelector}}
+    {{#each customSelector}}
+    {{@key}}: {{this}}
+    {{/each}}
+    {{else}}
     {{#if deploymentName}}
     workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{deploymentName}}
     {{else}}
     workload.user.cattle.io/workloadselector: {{deploymentType}}-{{namespace}}-{{name}}
+    {{/if}}
     {{/if}}
   sessionAffinity: None
   {{#contains clusterIP "None"}}
