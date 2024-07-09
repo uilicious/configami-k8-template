@@ -120,6 +120,9 @@ spec:
       tolerations: 
         {{#json2yaml "specTolerations"}}{{/json2yaml}}
       {{/if}}
+      {{#if priorityClassName}}
+      priorityClassName: {{priorityClassName}}
+      {{/if}}
       containers:
       - name: {{name}}
         image: "{{image}}"
