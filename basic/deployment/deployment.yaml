@@ -83,6 +83,10 @@ spec:
             {{#json2yaml "customPodAffinity"}}{{/json2yaml}}
             {{/if}}
         {{/if}}
+        {{#if _podAntiAffinity}}
+        podAntiAffinity:
+          {{#json2yaml "_podAntiAffinity"}}{{/json2yaml}}
+        {{/if}}
       {{/if}}
       {{#if containerTopologySpread.enable}}
       # Enable containerTopologySpread, for better container distribution in the cluster
